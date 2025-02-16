@@ -80,7 +80,7 @@ module.exports.SubscribeMessage = async (channel, service) => {
 
   channel.bindQueue(q.queue, EXCHANGE_NAME, CUSTOMER_SERVICE);
 
-  channel.consume(
+  channel.consume( 
     q.queue,
     (msg) => {
       if (msg.content) {

@@ -101,6 +101,37 @@ class CustomerRepository {
 
     }
 
+    async RemoveFromWishlist(customerId, productId) {
+        try {
+            const profile = await CustomerModel.findById(customerId).populate('wishlist');
+            
+            if (profile) {
+                let wishlist = profile.wishlist;
+                
+                // Find and remove the product
+                const index = wishlist.findIndex(item => 
+                    item._id.toString() === productId.toString()
+                );
+                
+                if (index !== -1) {
+                    wishlist.splice(index, 1);
+                    profile.wishlist = wishlist;
+                    
+                    const updatedProfile = await profile.save();
+                    return updatedProfile.wishlist;
+                }
+                
+                throw new Error('Product not found in wishlist');
+            }
+            
+            throw new Error('Customer not found');
+            
+        } catch (err) {
+            throw new Error(`Failed to remove from wishlist: ${err.message}`);
+        }
+    }
+    
+
 
     async AddCartItem(customerId, { _id, name, price, banner},qty, isRemove){
 

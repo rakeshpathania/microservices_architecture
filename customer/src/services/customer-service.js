@@ -77,6 +77,10 @@ class CustomerService {
          const wishlistResult = await this.repository.AddWishlistItem(customerId, product);        
         return FormateData(wishlistResult);
     }
+    async RemoveFromWishlist(customerId, product){
+        const wishlistResult = await this.repository.RemoveFromWishlist(customerId, product);        
+       return FormateData(wishlistResult);
+   }
 
     async ManageCart(customerId, product, qty, isRemove){
         const cartResult = await this.repository.AddCartItem(customerId, product, qty, isRemove);        
@@ -100,9 +104,9 @@ class CustomerService {
 
         switch(event){
             case 'ADD_TO_WISHLIST':
-            case 'REMOVE_FROM_WISHLIST':
                 this.AddToWishlist(userId,product)
                 break;
+            case 'REMOVE_FROM_WISHLIST':
             case 'ADD_TO_CART':
                 this.ManageCart(userId,product, qty, false);
                 break;
